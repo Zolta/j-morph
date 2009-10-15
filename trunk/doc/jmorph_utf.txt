@@ -1,0 +1,104 @@
+
+
+  A jmorph egy általános célú morfológiai elemző felé tett első lépés.
+
+  A jelenlegi korlátai abból erednek, hogy először a myspell formátumú aff/dic
+formátumot használta, aztán pluginként került bele a hunlex előtti hunmorph
+aff/dic formátuma a morfológiai annotációval és a képzők mentén adott affix
+flag örökléssel.
+
+  A szótárban felsorolt szavakat nem pusztán karaktersorozatoknak tekinti, amin
+az affix szabályok hatnak, hanem komplex egységként bánik velük.
+
+1. mitol mas mint a myspell
+
+  Alapvetően attól, hogy az elemzés keresését és előállítását a konkrét
+szabályoktól független rekurzióban végzi. A rekurzió során úgynevezett
+fogyasztó (consumer) objektumokat konfigurál, amik az éppen futó rekurziós
+lépést felügyelik: megkapnak minden elemzést és a megkapott elemzésre
+illesztik a sajátjukat. Példa: a beszédesek elemzése így zajlik:
+
+  0. az elemzés konfigurációja szerint (hogy hány és milyen elemzéseket kell
+     megtalálni) elkészít egy fogyasztót, ezzel a fogyasztóval elindítja az
+     elemzést
+  1. Megtalálja az 'ek'-et levágó szabályt a beszédes tővel. Épít egy fogyasztót
+     azzal a konfigurációval, hogy az 'ek'-es szabályt kell tudnia alkalmazni a
+     következő lépéstől kapott elemzésekre.  Elindítja a 2. rekurziós lépést a
+     'beszédes' szóval és ezzel a  fogyasztóval.
+  2. ez a lépés megtalálja az 'es'-t levágó szabályt és a 'beszéd' tövet, amit
+     megtalál a szótárban. Elkészíti azt az elemzést, ami elmondja, hogy a
+     megtalált szótári objektumból (ami nem a beszéd karaktersorozat, hanem egy
+     komplett  szótári objektum, ami megmondja, hogy milyen szabályok
+     alkalmazhatók rá és felsorolja az összes homonímiát is) az 'es' szabállyal
+     készített egy újat. Ezt az elemzést odaadja a fogyasztójának, ami, ahogy
+     azt 1.-ben leírtuk, megnézi, hogy az 'ek' szabály alkalmazható-e az elemzésben
+     készített objektumára. Ha nem, akkor azt mondja a 2. lépésnek, hogy keressen
+     további elemzéseket. Ha igen, akkor továbbadja a 0. lépésben készített
+     fogyasztónak és az mondja meg, hogy kell-e folytatni az elemzést.
+     
+  Ugyanebben a rekurzióban történik az összetevőkre bontás - az összetevőkre
+bontás egy speciális szabály. A szabályok nemcsak affix vagy szóösszetételi
+szabályok lehetnek, hanem bármi egyéb - egy új típusú szabály egy egyszerű
+interfacen illeszthető az elemzésbe.
+
+A konfiguráció legrugalmasabb módja az lenne, hogy az elemzés 0. lépésének
+odadjuk a saját fogyasztónkat - akkor állítja le az elemzést, amikor akarja.
+
+2. szerinted miert gyorsabb
+
+Nem tudom. Tisztességgel keres az affix szabályok között, az összetett szóra
+bontásnál nem csinálja többször ugyanazt, hanem cache-eli és újra felhasználja
+a részeredményeket, az elemzendő szót egyszer darabolja fel és az előre
+elkészített darabokat használja.
+
+3. hogyan tudod allitani, hogy mit es meddig vagsz le.
+
+A prefix és suffix típusú szabályokra egymástól függetlenül meg lehet mondani,
+hogy a legrövidebb vagy a leghosszabb affixszel kezdjék és aztán az egyre
+hosszabbakkal (rövidebbekkel) folytassák az elemzést. 
+
+4. objektum orientalt-e
+
+igen
+
+5. hogyan ternel el az aff/dic-tol, ha sok tiz ember dolgozna neked sajat
+eroforrason
+
+  A szótárban minden szóhoz egyetlen szóosztály-megjelölést tennék és a
+szóosztályokat definiálnám. Nem lehet két azonos szó azonos osztállyal, a
+különböző osztályú azonosak a homonímák.
+  Ez azt is jelenti, hogy a kivételes szavakra akár egyelemű szóosztályok is
+lennének - ha tényleg kivételes, akkor úgyis van ilyen, csak így-úgy leplezni
+próbáljuk. A cél az, hogy a szabály, a szótári szó (lemma) és a morfológiai
+annotáció explicit fogalmak legyenek. 
+	
+  A szóosztály definíciója megadja a szóosztályba tartozó szavak morfológiai
+annotációját (az elemzőt NEM ÉRDEKLI a szófaj sem; az egész azért kell, hogy
+áttekinthető, bővíthető, stb. keretet építsünk, ahol csak az érdekes, ami
+tényleg az elemző szintjén).
+
+  A szabály definíciója megnevezi a típusát, konfigurációt ad a típusnak
+megfelelően és felsorolja azokat a szóosztály n-eseket, amikre alkalmazható;
+mindre megjelöli, hogy mi a szabály kimeneti szóosztálya. A normál szabályokra
+n = 1, az összetétel szabályra n = 2. Így a szabályt annak ábrázoljuk, ami:
+
+ tipikusan egyváltozós függvény szavakon, ahol a keletkezett szó újra alanya
+ (lehet) újabb szabályalkalmazásnak.
+  
+  Ezen a definíción definiálható a szorzás (ezzel zárult a szóösszetételi
+levelezés Viktorral), vagyis a generálás akár online, akár offline.
+
+  A szorzáshoz a morfológiai annotációig bezárólag lehet mindent használni.
+  
+  Ezzel csak egy baj van: a szabály nem változtatja a szóosztály
+morfológiai annotációját. Ezért a szabály definíciójakor meg kell adni azt a 
+morfológiai annotációt, amiből és a sajátjából a kimeneti osztály gyártja a
+teljeset (NEM string illesztés - lehet úgy is, de ezt bízzuk a szóosztály és a
+morfológiai annotáció implementációjára).
+  
+  Valójában ennek a szótárnak és szabályrendszernek előállítását támogató
+eszköz a hunlex, csak szerintem nincsenek kiépítve ezek az egyszerű fogalmak.
+
+Az affix szabályok nyilván maradnak (én legalábbis nem tudok jobbat), csak a
+helyükre kerülnek - a konfigurációba.
+

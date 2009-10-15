@@ -1,0 +1,76 @@
+A definiciós file az affix file-t es a szótár file-okat nevezi meg.
+
+Minden file-megnevezés 4 elembõl áll: a file neve, a file karakter
+encoding-ja, annak a Java osztálynak a neve, amely olvasni tudja és
+opionálisan az olvasó osztálynak szóló ún. extenzió.
+
+A konfigurációs file-ban elõször az affix-file-t kell konfigurálni
+az esetleges extenziókkal együtt (az extenziót ld. lejjebb). Aztán
+jönnek a szótár-file-ok.
+
+Ha a konfigurációs file nem tartalmaz szótár-megnevezést, akkor a
+jmorph hipotetikusan tövel.
+
+A konfigurációs file-ban minden konfigurációs elem külön sor.
+
+Példa
+
+1. szótár:
+
+hu_HU.aff
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader
+
+az affix file a hu_HU.aff, a file karakter encoding-ja ISO-8859-2 és
+net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader Java osztály
+tudja beolvasni.
+
+A szótárolvasó osztályok:
+
+a) net.sf.jhunlang.jmorph.parser.AffixReader
+
+   a magyar ispell affix formátumot olvassa
+
+b) net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader
+
+   a hunmorph affix formátumot olvassa
+   
+c) net.sf.jhunlang.jmorph.sword.parser.EnglishAffixReader
+
+   a hunlex affix formatumot olvassa; még nem teljes
+   
+Az affix file konfiguráció ún. extenzió sorokat is tartalmazhat,
+ezek az EXT szóval kezdõdnek és az affix-file konfigurációja után
+következnek. A lehetséges extenzió sorokat az affix-file olvasására
+konfigurált Java osztály határozza meg.
+
+A SwordAffixReader a következő 4 extenziót ismeri:
+
+   1. DERIVATIVES azt a file-t nevezi meg, amely felsorolja a kepzõk
+     'neveit'. Az affix és a szótár file-ban a szabályok ill. szavak
+      után szereplõ leírás a kepzõkre x_NEV_y alakú; a felsorolt nevek
+      ennek a leirásnak a NEV részére vonatkoznak.
+   2. FLAGFILTER azt a file-t nevezi meg, amely felsorolja a megengedett
+      illetve tiltott affix flag-eket. Opcionális: ha van FLAGFILTER sor,
+      akkor csak a flagfilter file-ban megengedett affix szabályokat olvassa
+      be.
+   3. RECURSION azt mondja meg, hogy a tövelés milyen mélységben legyen
+      rekurzív a ragok leválasztása után; vagyis hogy a tövelõ hányszor
+      próbáljon meg képezni és összetett szóra bontani egymásután.
+   4. COMPOUND azt a file-t nevezi meg, ami felsorolja az összetett szóban
+      megengedett szófaj-párokat. Az összetett szóra bontás a felsorolt
+      szófaj-párok alapján akkor is felbontja a szavakat, ha a dictionary
+      file-ban nincs meg a megfelelő compound flag-jük.
+
+A FLAGFILTER file sorai a FLAGS-el vagy NOT FLAGS-el kezdõdnek, aztán a
+megengedett illetve tiltott flagek következnek.
+
+Ha vannak FLAGS-el kezdõdõ sorok, akkor csak azokat olvassa be, amik abban
+szerepelnek.
+
+A NOT FLAGS-el kezdõdõ sorokban szereplő flag-eket nem olvassa be.
+
+A FLAGFILTER file-ban az affix szabályokat a morfológiai leírásuk szerint
+is lehet válogatni; akkor az ENDINGS ill. NOT ENDINGS kezdi a sort, utána
+az EQU, CONTAINS, STARTS valamelyike, végül a megengedett ill. tiltott
+leírás darab. Így lehet pl. az összes ACC-ot tartalmazó flag-et tiltani.

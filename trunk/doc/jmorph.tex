@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage{t1enc}
+\usepackage[latin2]{inputenc}
+\usepackage[magyar]{babel}
+\begin{document}
+
+\title{Jmorph dokument\'aci\'o}
+\author{Simon Eszter}
+\maketitle
+
+\section{Bevezet\'es}
+\subsection{R\"ovid le\'{i}r\'as}
+
+A jmorph egy Java alap\'u morfol\'ogiai elemz\H{o}, illetve szintetiz\'al\'o, gener\'al\'o program. Ispell-t\'{i}pus\'u er\H{o}forr\'asokat haszn\'al, melyek a magyarhoz hasonl\'o agglutin\'al\'o jelleg\H{u} nyelvek morfol\'ogiai elemz\'es\'ere az \'evek-\'evtizedek sor\'an megfelel\H{o}nek bizonyultak. 
+
+\subsection{T\"ort\'enet}
+
+A Magyar Nagylexikon Kiad\'o Rt.-n\'el 2002-t\H{o}l foly\'o ,,Elektronikus Magyar Nagylexikon'' projekt (tov\'abbiakban: eMNL) keret\'eben sz\"uletett a jmorph. A projekt eredeti c\'elkit\H{u}z\'ese nem egyszer\H{u}en egy elektronikus lexikon l\'etrehoz\'asa volt, hanem a Nagylexikon (tov\'abbiakban: MNL) sz\"oveganyag\'an alapul\'o ontol\'ogia \'ep\'{i}t\'ese, amib\H{o}l nyelv\'eszeti h\'att\'eranyagok felhaszn\'al\'as\'aval \'es a megfelel\H{o} lek\'erdez\H{o} rendszerek seg\'{i}ts\'eg\'evel a MNL-ban lev\H{o} tud\'as reprezent\'aci\'oja bontakozik ki. \par
+A sz\"oveg feldolgoz\'as\'anak fontos l\'ep\'ese a sz\"ovegszavak t\"ovel\"ese. Az k\"onnyen bel\'athat\'o, hogy egy sz\"ovegben val\'o keres\'es sor\'an t\"obb tal\'alatot kapunk, ha nemcsak a t\"ovet tudjuk keresni, hanem a sz\'o minden toldal\'ekolt alakj\'at. Ha p\'eld\'aul az 'alma' sz\'ot keress\"uk, egy ,,hagyom\'anyos'' keres\H{o}vel csak azokat az alakokat kapjuk meg, amikben konkr\'etan az 'alma' betűszekvencia szerepel. M\'{i}g ha a keres\H{o} m\"og\"ott egy t\"ovel\H{o} m\H{u}k\"odik, a keres\H{o} megtal\'alja az 'alma' \"osszes toldal\'ekolt alakj\'at is, mint pl. 'alm\'at', 'alm\'aknak', 'alm\'as'. Ez k\"ul\"on\"osen azokn\'al a szavakn\'al jelent sokat, amelyeknek a toldal\'ekol\'as sor\'an megv\'altozik a t\"ove. \par
+Ezt bel\'atva els\H{o} l\'ep\'esben sz\"uks\'eg\"unk volt egy magyar nyelv\H{u} t\"ovel\H{o} programra. Ilyenben nem d\'usk\'alunk, az egyetlen szabadon hozz\'af\'erhet\H{o} \'es felhaszn\'alhat\'o ilyen annak idej\'en (2002-ben) a Magyar Ispell nev\H{u} helyes\'{i}r\'as-ellen\H{o}rz\H{o} volt, amit N\'emeth L\'aszl\'o fejlesztett ki hossz\'u \'evek alatt, \'es 2002 janu\'arj\'aban hozta nyilv\'anoss\'agra el\H{o}sz\"or. (A Magyar Ispell t\"ort\'enet\'er\H{o}l l\'asd N\'emeth L\'aszl\'o Magyar Ispell dokument\'aci\'oj\'at: \mbox{http://magyarispell.sourceforge.net/}.) 2003 m\'arcius\'at\'ol a fejleszt\'est a Sz\'oszablya projekt vitte tov\'abb egy ny\'{i}lt forr\'ask\'od\'u magyar morfol\'ogiai elemz\H{o} kifejleszt\'es\'enek ir\'any\'aba. (Err\H{o}l b\H{o}vebben l\'asd: \mbox{http://mokk.bme.hu/projektek/szoszablya}.)  \par
+2003 okt\'ober\'eben kezdett el Gyepesi Gy\"orgy a Magyar Ispell Javás v\'altozat\'an dolgozni. Ennek els\H{o} verzi\'oja az\'ev decemberben m\'ar m\H{u}k\"od\"ott, akkor m\'eg jspell n\'even. A jspell/jmorph teh\'at a Magyar Ispellnek csak az er\H{o}forr\'asait haszn\'alja, mag\'at a k\'odot nem. A jmorph fejleszt\'ese \'es haszn\'alata sor\'an sok hib\'ara \'es probl\'em\'ara f\'eny der\"ult; ezek k\"oz\"ul jav\'{i}t\'asra ker\"ultek azok, amik jav\'{i}that\'ok az ispell-t\'{i}pus\'u er\H{o}forr\'as-kezel\'es keretein bel\"ul. \par
+
+\subsection{El\'erhet\H{o}s\'eg}
+
+A jmorph jhunlang n\'even szabadon el\'erhet\H{o}, let\"olthet\H{o}, haszn\'alhat\'o: \mbox{https://sourceforge.net/projects/jhunlang/}. K\"onnyen lehet, hogy ez az el\'erhet\H{o}s\'eg r\"ovid id\H{o}n bel\"ul meg fog v\'altozni. \par
+
+\subsection{A szerz\H{o}k}
+
+A projekt munkat\'arsai: Incze Lajos, a vezet\H{o}fejleszt\H{o} (\mbox{incze@axelero.hu}); Gyepesi Gy\"orgy, aki \'{i}rta a szoftvert (\mbox{ggyepesi@kpro.hu}); Simon Eszter, nyelv\'esz (\mbox{simon.eszter@nagylexikon.hu}). \par
+
+\section{Haszn\'alat}
+
+A jmorphnak 5 funkci\'oja van: morfol\'ogiai elemz\'es, gener\'al\'as, ezen bel\"ul deriv\'al\'as \'es inflekt\'al\'as, valamint szintetiz\'al\'as. A morfol\'ogiai elemz\'es a legfontosabb \'es legink\'abb haszn\'alt funkci\'oja, ez az alapfunkci\'o tulajdonk\'eppen. A morfol\'ogiai elemz\'es c\'elja, hogy egy beadott sz\'or\'ol minden morfol\'ogiai inform\'aci\'ot megtudjunk: mi a sz\'ofaja, mi a t\"ove, milyen toldal\'ekok vannak rajta. A deriv\'al\'as sor\'an a program a megadott sz\'onak minden lehets\'eges k\'epzett alakj\'at el\H{o}\'all\'{i}tja. Ugyan\'{i}gy az inflekt\'al\'assal az \"osszes inflekt\'alt alakot kapjuk meg. A gener\'al\'as ezek egy\"uttese: minden k\'epzett \'es inflekt\'alt alakot el\H{o}\'all\'{i}t. A szintetiz\'al\'as eset\'eben nemcsak azt szabhatjuk meg, hogy milyen sz\'onak szeretn\'enk a k\'epzett/ragozott alakj\'at, hanem azt is, hogy konkr\'etan milyen alakot akarunk. A k\'es\H{o}bbiekben l\'atni fogunk p\'eld\'akat mindegyikre. \par
+Mind az \"ot funkci\'o haszn\'alhat\'o parancssoros verzi\'oban (net.sf.jhunlang.jmorph.cl) vagy grafikus felhaszn\'al\'oi fel\"uleten (net.sf.jhunlang.jmorph.app).
+
+
+\subsection{Parancssoros verzi\'o}
+
+\subsubsection{Morfol\'ogiai elemz\'es}
+
+A parancssoros v\'altozat standard inputj\'anak default karakterk\'odol\'asa ISO-8859-2. Ha morfol\'ogiai elemz\'est szeretn\'enk, a classpathra a net.sf.jhunlang.jmorph.cl.Morph oszt\'alyt kell helyezni, majd be kell \'{i}rni az elemeztetni k\'{i}v\'ant sz\'ot, pl. 'kuty\'asokkal'. A standard output a k\"ovetkez\H{o}k\'eppen fog kin\'ezni: \\
+
+kuty\'asokkal    1     kutya   adj s\_ATTRIBUTE\_adj  PLUR  INSTR  \\
+
+Ahol
+a \textit{kuty\'asokkal} a beadott sz\'o,
+az \textit{1} az elemz\'esek sz\'ama,
+a \textit{kutya} a t\H{o},
+az \textit{adj} a sz\'ofaj, ezesetben mell\'ekn\'ev (a jel\"ol\'esek dek\'odol\'as\'at l\'asd egy mell\'ekletben),
+az \textit{s\_ATTRIBUTE\_adj} annak a k\'epz\H{o}nek a jel\"ol\"ese, ami a t\H{o}b\H{o}l k\'epzett sz\'ot csin\'alt (felold\'asa szint\'en mell\'ekletben),
+a \textit{PLUR} \'es az \textit{INSTR}, teh\'at a csupa nagybet\H{u}vel szedett r\"ovid\'{i}t\'esek a sz\'oalakon l\'ev\H{o} inflexi\'okat jel\"olik (szint\'en mell\'eklet).
+
+Ha feloldjuk teh\'at a rejtjeleket, megtudjuk, hogy a 'kuty\'asokkal' sz\'oalak a 'kutya' sz\'o \textit{s} tulajdons\'agk\'epz\H{o}vel k\'epzett, t\"obbessz\'am\'u \'es instrumentalis, azaz \textit{-vAl} esetraggal ell\'atott alakja, \'es a sz\'ofaja mell\'ekn\'ev. \par
+
+\subsubsection{Gener\'al\'as}
+
+Ez a funkci\'o a net.sf.jhunlang.jmorph.cl.Gen Java-oszt\'allyal futtathat\'o. Mivel ez a beadott sz\'o minden lehets\'eges alakja\'at el\H{o}\'all\'{i}tja, nincs m\'as dolgunk, mint be\'{i}rni azt a sz\'ot, aminek az alakjait akarjuk. Vegy\"uk p\'eld\'aul a 'kutya' sz\'ot. Ha ki\'{i}ratjuk az eredm\'enyt egy f\'ajlba, l\'athatjuk, hogy 965 alakot \'all\'{i}t el\H{o}. %A 965 alak kev\'es, elm\'eletileg egy teljes f\H{o}n\'evi paradigma 1080 alakb\'ol \'all, \'es ha a k\'epzett alakok is tov\'abb lenn\'enek ragozva, az minden k\'epzett sz\'o szor 1080 alakot jelentene.
+Ebb\H{o}l egy \'{i}gy n\'ez ki: \\ 
+
+kuty\'asodik      noun s\_ATTRIBUTE\_adj NOM Odik\_MEDIAL\_vrb\_it PRES\_INDIC\_INDEF\_SG\_3 \\
+
+%A karakterk\'odol\'assal probl\'em\'ak vannak: ha a gener\'al\'as kimenet\'et egy text f\'ajlba ir\'any\'{i}tom, annak a k\'odol\'asa utf-8, valami rejt\'elyes okn\'al fogva.
+%M\'asik komment: ITT NEM NOUNNAK K\'ENE LENNIE, HANEM VERBNEK! \'ES MINDEN K\'EPZETT ALAKN\'AL UGYANEZ A PROBL\'EMA!
+
+A rejtjelez\'es dek\'odol\'asa: \\
+a \textit{kuty\'asodik} a kapott sz\'oalak, \\
+a \textit{noun} a sz\'ofaj, ezesetben f\H{o}n\'ev, \\
+az \textit{s\_ATTRIBUTE\_adj} az 's' tulajdons\'agk\'epz\H{o}, ami mell\'eknevet (adj) \'all\'{i}t el\H{o}, \\
+a \textit{NOM} a nomin\'alis esetrag jele, ami akkor lenne az alak v\'eg\'en, ha nem k\"ovetkezne ut\'ana k\'epz\H{o}, \\ %Ennek igaz\'ab\'ol nem lenne helye itt; hogy m\'egis itt van, abb\'ol k\"ovetkezik, hogy a nomin\'alis esetrag z\'er\'omorf\'ema, azaz a hangtani realiz\'aci\'oja nulla. A szab\'alyok pedig \'ugy vannak \"osszerakva a Magyar Ispell affixf\'ajlj\'aban, hogy nem tesznek k\"ul\"onbs\'eget a t\'enyleges alanyeset\H{u} alak \'es a k\'epz\'es tov\'abbi bemenet\'e\"ul szolg\'al\'o kv\'azi alak k\"oz\"ott. 
+az \textit{Odik\_MEDIAL\_vrb\_it} egy medi\'alis k\'epz\H{o}, ami intranzit\'{i}v, azaz t\'argyatlan ig\'et k\'epez, \\
+a \textit{PRES\_INDIC\_INDEF\_SG\_3} az inflexi\'ok jele: jelen idej\H{u}, kijelent\H{o} m\'od\'u, hat\'arozatlan t\'argy\'u, egyes sz\'am harmadik szem\'ely\H{u} alakr\'ol van teh\'at sz\'o. \par
+
+\subsubsection{Deriv\'al\'as \'es inflekt\'al\'as}
+
+A deriv\'al\'as (net.sf.jhunlang.jmorph.cl.Der) \'es az inflekt\'al\'as (net.sf.jhunlang.jmorph.cl.Infl) ugyan\'{i}gy m\H{u}k\"odik, csak a gener\'al\'as egy-egy r\'eszhalmaz\'at adja eredm\'eny\"ul. Az inflekt\'al\'as -- szebben fogalmazva inflexi\'o -- mag\'aban foglalja azokat a toldal\'ekokat, amiket a hagyom\'anyos nyelvtanok ragnak \'es jelnek h\'{i}vnak. \par
+
+\subsubsection{Szintetiz\'al\'as}
+
+A parancssoros v\'altozatban nincs szintetiz\'al\'o, mert annak ilyen alkalmaz\'as\'ahoz tudni k\'ene az \"osszes lehets\'eges toldal\'ekot. Ugyanis a szintetiz\'al\'o agy megadott alaknak egy megadott toldal\'ekkal ell\'atott alakj\'at gy\'artja le. Ezt praktikusabb a grafikus felhaszn\'al\'oi fel\"uleten haszn\'alni. \par
+
+\subsection{A grafikus felhaszn\'al\'oi fel\"ulet}
+
+\subsubsection{Morfol\'ogiai elemz\'es}
+
+A net.sf.jhunlang.jmorph.app.Morph oszt\'allyal elind\'{i}tva egy \emph{Morph} fant\'azianev\H{u} ablakot kapunk, amely n\'egy r\'eszb\H{o}l \'all. \par
+Az els\H{o} r\'esz szolg\'al arra a c\'elra, hogy be\'{i}rjuk az elemzend\H{o} sz\'ot. \par
+A m\'asodik mez\H{o}ben arra van lehet\H{o}s\'eg\"unk, hogy kiv\'alasszuk az elemz\'es m\'elys\'eg\'et. T\'{i}z szint l\'etezik:
+
+\begin{description}
+
+\item[first-stem]: Ha a sz\'ot\'arban megtal\'alja a t\"ovet, meg\'all az elemz\'es, \'es ki\'{i}rja az els\H{o} tal\'alatot. P\'eld\'aul ha a \emph{z\'arat} sz\'ot adom be, az els\H{o} t\H{o} \'es elemz\'es, amit kiad, a k\"ovetkez\H{o} lesz: \\
+
+z\'arat(z\'arat, z\'ar), vrb\_tr, PRES\_INDIC\_INDEF\_SG\_3: Sw[z\'arat<vrb\_tr>+[[tAt\_FACTITIVE\_vrb\_tr]+{PRES\_INDIC\_INDEF\_SG\_3}]<==Sw[z\'ar<noun>+{NOM}]] \\
+
+Ezt az elemz\'est k\'et f\H{o} r\'eszre lehet bontani, hogy jobban \'at tudjuk tekinteni: a kett\H{o}spont el\H{o}tti \'es az azut\'ani r\'eszekre. Sorbav\'eve az elej\'er\H{o}l: \\
+a \textit{z\'arat} a relat\'{i}v t\H{o}, ami azt jelenti, hogy csak az inflexi\'ok vannak lev\'agva r\'ola, a deriv\'aci\'ok nem; \\
+a z\'ar\'ojelben lev\H{o} \textit{z\'arat} a sz\'ot\'ari t\H{o}, amit megtal\'alt a sz\'ot\'arban; \\
+a k\"ovetkez\H{o} alak a z\'ar\'ojelben, jelen esetben a \textit{z\'ar} az abszol\'ut t\H{o}, ami azt jelenti, hogy minden l\'etez\H{o} toldal\'ek, inflexi\'o \'es deriv\'aci\'o egyar\'ant le van v\'agva r'ola; \\
+a \textit{vrb\_tr} a relat\'{i}v (teh\'at a z\'ar\'ojelen k\'{i}v\"uli) t\H{o} sz\'ofaja, itt t\'argyas ige; \\
+a \textit{PRES\_INDIC\_INDEF\_SG\_3} az ige inflexi\'oja: ez egy jelen idej\H{u}, kijelent\H{o} m\'od\'u, hat\'arozatlan t\'argy\'u, egyes sz\'am harmadik szem\'ely\H{u} igealak; \\
+a kett\H{o}spont ut\'ani r\'esz azt mutatja, ahogy el\H{o}\'allt ez az alak; \\
+az \textit{Sw} a \textit{single word} r\"ovid\'{i}t\'ese, azt jelenti, hogy ez egy egyszer\H{u} -- nem \"osszetett -- sz\'o; \\
+a sz\"ogletes z\'ar\'ojelben lev\H{o} kifejez\'est pont ford\'{i}tva kell olvasni: a ny\'{i}l jobb oldala a kiindul\'o \'allapot, vagyis itt a \textit{z\'ar} alanyeset\H{u} f\H{o}n\'ev; \\
+ebb\H{o}l lett a \textit{z\'arat} tranzit\'{i}v ige a \textit{tAt} m\H{u}veltet\H{o} k\'epz\H{o}vel k\'epezve; \\
+a k\'epzett alakon lev\H{o} inflexi\'ot a kapcsos z\'ar\'ojelek k\"oz\"ott lev\H{o}, m\'ar ismertetett szekvencia jelzi. \\
+
+\item[all-stems]: Itt is meg\'all az elemz\'es, ha a sz\'ot\'arban megtal\'alja a t\"ovet, de nemcsak az els\H{o}t \'{i}rja ki, hanem az \"osszeset. A \emph{z\'arat} eset\'eben ezek a k\"ovetkez\H{o}k lesznek: \\
+
+z\'arat(z\'arat, z\'ar), vrb\_tr, PRES\_INDIC\_INDEF\_SG\_3: Sw[z\'arat<vrb\_tr>+[[tAt\_FACTITIVE\_vrb\_tr]+{PRES\_INDIC\_INDEF\_SG\_3}]<==Sw[z\'ar<noun>+{NOM}]] \\
+
+z\'arat(z\'arat, z\'arat), vrb, PRES\_INDIC\_INDEF\_SG\_3: Sw[z\'arat<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}] \\
+
+z\'ar(z\'ar, z\'ar), noun, ACC: Sw[z\'ar<noun>+{NOM}], Sfx[I, +at, +{ACC}] \\
+
+Az els\H{o} elemz\'es ugyanaz, amit a first-stem kiadott. A m\'asodik elemez\'es annyiban k\"ul\"onb\"ozik t\H{o}le, hogy itt nem a \textit{z\'ar} t\H{o}b\H{o}l lett k\'epezve a \textit{z\'arat} ige, hanem a sz\'ot\'arb\'ol lett kiv\'eve. Ebben az esetben az abszol\'ut t\H{o} teh\'at a k\'epzett sz\'o, \'es semmi nem utal arra, hogy a \textit{z\'ar}nak \'es a \textit{z'arat}nak b\'armi k\"oze lenne egym\'ashoz.
+%Az l\'atszik, hogy van egy hiba: az els\H{o} esetben a z\'arat sz\'ofaja vrb\_tr, a m\'asikban vrb. Ez vsz. sz\'ot\'arhiba: a z\'arat nem t\'argyas igek\'ent lett felv\'eve.
+A harmadik eset k\"ul\"onb\"ozik a t\"obbit\H{o}l: itt a \textit{z\'ar} sz\'ofaja f\H{o}n\'ev (noun), ami t\'argyesetben van (ACC); a kett\H{o}spont ut\'an lev\H{o} r\'eszben pedig azt l\'atjuk, hogy a sz\'ot\'ari egys\'egb\H{o}l hogyan \'allt el\H{o} ez az alak. Az \textit{Sfx} a suffix, azaz t\H{o}v\'egi toldal\'ek r\"ovid\'{i}t\'ese, a sz\"ogletes z\'ar\'ojelben az els\H{o} karakter egy affixf\'ajlbeli flag, majd pluszjellel az a bet\H{u} vagy bet\H{u}csoport k\"ovetkezik, amit a szab'aly szerint hozz\'a kell rakni a t\H{o}h\"oz, v\'eg\"ul kapcsos z\'ar\'ojelek k\"oz\"ott a hozz\'arakott inflexi\'o jele. \par
+
+\item[first-suffix]: Hi\'aba tal\'al a sz\'ot\'arban egy megfelel\H{o}nek t\H{u}n\H{o} t\"ovet, az\'ert tov\'abbmegy a keres\'es, \'es megpr\'ob\'al minden\'aron suffixet lev\'agni r\'ola. Nem keres m\'ast, csak t\H{o}v\'egi toldal\'ekot, teh\'at nem n\'ez prefixet vagy sz\'o\"osszet\'etelt. Itt is meg\'all az els\H{o} megtal\'alt suffixn\'al. \'{I}gy a \textit{v\'arunk} alakra a k\"ovetkez\H{o} elemz\'est adja: \\
+
+v\'ar(v\'ar, v\'ar), noun, NOM: Sw[v\'ar<noun>+{NOM}], Sfx[I, +unk, +{POSS\_PL\_1}+{NOM}] \\
+
+Az azonos alak\'u szavak k\"oz\"ul csak az egyiket, jelen esetben a t\"obbes sz\'am els\H{o} szem\'ely\H{u} birtokos szem\'elyragos f\H{o}nevet kapjuk meg. \\
+
+\item[all-suffixes]: Ezen a szinten minden olyan elemz\'est megkapunk, amik k\"oz\"ul az el\H{o}z\H{o} kiv\'alasztotta az egyiket. 
+%Ez a kiv\'alaszt\'as tal\'alomra megy. Statisztikai eszk\"oz\"okkel vagy nyelv\'eszeti megalapoz\'assal ezen lehet v\'altoztatni. 
+\'{I}gy megkapjuk mindk\'et homonim\'at, vagyis a birtokos szem\'elyragos f\H{o}nevet, \'ugymint a mi tulajdonunkban l\'ev\H{o} v\'ar, \'es a szem\'elyragozott ig\'et, ami azt a cselekv\'est (vagy \'allapotot) fejezi ki, hogy mi v\'arunk: \\
+
+v\'ar(v\'ar, v\'ar), noun, NOM: Sw[v\'ar<noun>+{NOM}], Sfx[I, +unk, +{POSS\_PL\_1}+{NOM}] \\
+
+v\'ar(v\'ar, v\'ar), vrb, PRES\_INDIC\_INDEF\_PL\_1: Sw[v\'ar<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}], Sfx[O, +unk, +{PRES\_INDIC\_INDEF\_PL\_1}] \\
+
+\item[first-prefix]: Ugyanaz, mint a first-suffix, csak nem suffixet n\'ez, hanem prefixet. 
+
+\item[all-prefixes]: Ugyanaz, mint az all-suffixes, csak prefixet n\'ez. 
+
+\item[first-cross]: Ez a szint egyszerre pr\'ob\'alja lev\'agni a prefixeket \'es a suffixeket, \'es csak az els\H{o}t \'{i}rja ki. P\'eld\'aul ha a \textit{leesett} sz\'ot \'{i}rjuk be, a k\"ovetkez\H{o}t kapjuk: \\
+
+leesik(esik, esik), vrb, PAST\_INDIC\_INDEF\_SG\_3: Sw[leesik<vrb>+[[le\_PREF\_]]<=Sw[esik<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}]], Sfx[Ź, +ett, +{PAST\_INDIC\_INDEF\_SG\_3}] \\
+
+Az elemz\'es szerint ez egy ige, ami \'ugy \'allt el\H{o}, hogy a \textit{le} prefixszel az \textit{esik}b\H{o}l ,,k\'epzett'' \textit{leesik} ige m\'ult idej\H{u}, kijelent\H{o} m\'od\H{u}, hat\'arozatlan t\'argy\'u, egyes sz\'am els\H{o} szem\'ely\H{u} inflexi\'oval lett ell\'atva. \\
+
+\item[all-crosses]: Ahogy az eddigiekben is, itt is a prefix-suffix lev\'ag\'asnak minden elemz\'es\'et megkapjuk: \\
+
+leesik(esik, esik), vrb, PAST\_INDIC\_INDEF\_SG\_3: Sw[leesik<vrb>+[[le\_PREF\_]]<=Sw[esik<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}]], Sfx[Ź, +ett, +{PAST\_INDIC\_INDEF\_SG\_3}] \\
+
+leesett(esik, esik), adj, NOM: Sw[leesett<adj>+[[tt\_PASTPART\_adj]+{NOM}]<=Sw[leesik<vrb>+[[le\_PREF\_]]<=Sw[esik<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}]]] \\
+
+Az els\H{o} eset ugyanaz, mint az el\H{o}z\H{o}n\'el, a m\'asodik esetben viszont egy mell\'eknevet kapunk, m\'egepdig \'ugy, hogy el\H{o}sz\"or az \textit{esik} ig\'eb\H{o}l a \textit{le} prefixszel kapjuk a \textit{leesik} ig\'et, majd ebb\H{o}l egy befejezett mell\'ekn\'evi igen\'evk\'epz\H{o}vel mell\'eknevet (igaz\'ab\'ol persze befejezett mell\'ekn\'evi igenevet) kapunk. \par
+
+\item[first-compound]: A sz\'o\"osszet\'etelt vizsg\'alja, ha tal\'al \"osszet\'eteli hat\'art, annak ment\'en felszeleteli a beadott sz\'ot, \'es csak az els\H{o}t \'{i}rja ki. P\'eld\'aul a \textit{bokat\"or\'es} eset\'eben: \\
+
+bokat\"or\'es(bokat\"or\'es, bokat\"or\'es), noun, NOM: Co[2, bokat\"or\'es<noun>+{NOM} Sw[boka<noun>+{NOM}] + Sw[t\"or\'es<noun>+[[\'As\_PROCESS/RESULT\_noun]+{NOM}]<=Sw[t\"orik<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}]]] \\
+
+A \textit{Co} a \textit{compound}, vagyis \"osszet\'etel r\"ovid\'{i}t\'ese, ami k\'et r\'eszb\H{o}l \'all, ezt jelzi a sz\"ogletes z\'ar\'ojelben lev\H{o} sz\'am. K\'et single wordb\H{o}l \'all: az egyik a \textit{boka}, a m\'asik a \textit{t\"or\'es}, ami a \textit{t\"orik} ig\'eb\H{o}l \'allt el\H{o} az \textit{\'As} eredm\'enyk\'epz\H{o}vel. \\ 
+
+\item[all-compounds]: Ezen a szinten megkapjuk az \"osszes lehets\'eges \"osszet\'eteli eredm\'enyt. Az el\H{o}z\H{o}h\"oz a \textit{bokat\"or\'es} eset\'eben m\'eg hozz\'aj\"on a k\"ovetkez\H{o} elemz\'es is: \\
+
+bokat\"or\'es(bokat\"or\'es, bokat\"r\'es), noun, NOM: Co[2, bokat\"or\'es<noun>+{NOM} Sw[boka<noun>+{NOM}] + Sw[t\"or'es<noun>+[[\'As\_PROCESS/RESULT\_noun]+{NOM}]<=Sw[t\"or<vrb>+{PRES\_INDIC\_INDEF\_SG\_3}]]] \\
+
+Ez annyiban k\"ul\"onb\"ozik az el\H{o}z\H{o}t\H{o}l, hogy nem a \textit{t\"orik}, hanem a \textit{t\"or} ige a kiindul\'o t\H{o}. \\
+
+\end{description}
+
+
+
+
+\end{document}

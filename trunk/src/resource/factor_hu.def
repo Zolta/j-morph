@@ -1,0 +1,12 @@
+# the affix file, its encoding and the affix reader class
+hu_HU.aff
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader
+
+# list of derivative keywords
+EXT COMPOUND ANY
+
+# the dictionary file, its encoding and the reader class
+hu_HU.dic
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordReader
