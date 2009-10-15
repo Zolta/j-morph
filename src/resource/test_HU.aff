@@ -1,0 +1,36 @@
+NAME Magyar Ispell helyesírási szótár
+LANG hu_HU
+HOME http://magyarispell.sourceforge.net
+VERSION Magyar 1.0-RC1
+SET ISO8859-2
+TRY íóúÍÓÚtaeslzánorhgkiédmyõpvöbucfjüûxwqTAESLZÁNORHGKIÉDMYÕPVÖBUCFJÜÛXWQ-.
+COMPOUNDMIN 2
+COMPOUNDFLAG Y
+COMPOUNDWORD 2 y
+COMPOUNDFORBIDFLAG %
+COMPOUNDSYLLABLE 6 aáeéiíoóöõuúüû
+SYLLABLENUM klmc
+COMPOUNDFIRST v
+COMPOUNDLAST x
+FORBIDDENWORD w
+ONLYROOT u
+ACCENT áéíóöõúüû aeiooouuu
+CHECKNUM
+WORDCHARS -.§%°0123456789
+HU_KOTOHANGZO Z
+
+# replacenment table for
+# - multicharacter suggestions
+# - well-sorted suggestions
+
+SFX U Y 1
+SFX U   0    ét           [^ao]                     [POSSESSEE]+[ACC]
+
+SFX O Y 1
+SFX O   0    tam          [^tóúõûk]                 [PAST_INDIC_INDEF_SG_1] H
+
+SFX H Y 1
+SFX H   0    tam          [^tóúõûk]                 [PAST_INDIC_INDEF_SG_1] U
+
+PFX Z Y 1
+PFX Z   0    ki           .                         ki[PREF]

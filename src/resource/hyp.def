@@ -1,0 +1,10 @@
+# the affix file, its encoding and the affix reader class
+hu_HU.aff
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader
+
+# list of derivative keywords
+EXT DERIVATIVES derivatives.lst
+# number of recursion steps on derivatives; 2 is needed for
+# stemming h�resebb to h�r + es + ebb
+EXT RECURSION 15

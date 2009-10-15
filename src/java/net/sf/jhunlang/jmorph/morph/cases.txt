@@ -1,0 +1,19 @@
+#syntactical cases
+NOM
+ACC
+DAT
+INSTR
+CAUS/FIN
+TRANS
+INE
+SUE
+ADE
+SBL
+DEL
+ILL
+EAL
+ALL
+ABL
+TERM
+FORM
+ESS

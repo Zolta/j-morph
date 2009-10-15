@@ -1,0 +1,17 @@
+# the affix file, its encoding and the affix reader class
+hu_HU.aff
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordAffixReader
+
+# list of derivative keywords
+EXT COMPOUND compound.lst
+# list of derivative keywords
+EXT DERIVATIVES derivatives.lst
+# number of recursion steps on derivatives; 2 is needed for
+# stemming híresebb to hír + es + ebb
+EXT RECURSION 4
+
+# the dictionary file, its encoding and the reader class
+hu_HU.dic
+ISO-8859-2
+net.sf.jhunlang.jmorph.sword.parser.SwordReader
