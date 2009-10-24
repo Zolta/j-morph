@@ -10,7 +10,7 @@ import net.sf.jhunlang.jmorph.parser.ParseException;
 
 public class Loader
 {
-  public final static String DEF_URL = "resource/hu.def";
+  public final static String DEF_URL = "hu.def"; //"resource/hu.def";
     
   protected Definition[] adef;
   protected Rules rules;
@@ -32,6 +32,9 @@ public class Loader
   
     if (args.length == 0)
     {
+      //This is the same as the system classloader, 
+      //which handles -classpath and should not be used
+      //otherwise, the code will only work in simple command-line applications	
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       URL defURL = cl.getResource(DEF_URL);
       if (defURL == null)
